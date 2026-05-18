@@ -1,0 +1,537 @@
+[16]  # Version number. Do not delete.
+
+[[workspace]]
+# These directories and files will be scanned when a workspace is opened so that search etc. works.
+# Example:
+# C:/projects/my-project  # <- the first directory in the list becomes the working directory
+# C:/jai
+# src  # <- this would be relative to the config file location
+
+[ignore]
+# Files and directories matching the following wildcards will not be loaded or descended into
+# Example:
+# *.js - will ignore all files with a '.js' extension
+# tmp* - will ignore any files or directories which start with 'tmp'
+# C:/project/dirname/** - will ignore everything under `dirname`
+# C:/project/dirname/*  - will ignore all files under `dirname`, but not recursively
+.svn
+.git
+
+[allow]
+# Files and directories matching the wildcards in this section will be loaded, even if they are ignored in the previous section.
+# NOTE: known binary file extensions are ignored by default (*.exe, *.obj etc.). If this is not what you want, you can explicitly allow them here.
+
+[file associations]
+# Optional file associations in the format `<wildcard1> <wildcard2> ... : <language>`
+# Example:
+# *.hpp *.hh *.h : cpp
+# todo.txt : todo
+
+
+[[settings]]
+
+maximize_on_start:                                  false
+open_on_the_biggest_monitor:                        false
+cursor_as_block:                                    true
+cursor_blink_time_in_seconds:                       5
+highlight_selection_occurrences:                    true
+highlight_line_with_cursor:                         false
+highlight_matching_brackets:                        true   # tsoding: show-paren-mode
+show_paste_effect:                                  true
+disable_file_open_close_animations:                 false
+double_shift_to_search_in_workspace:                false
+strip_trailing_whitespace_on_save:                  all    # tsoding: delete-trailing-whitespace in write-file-functions
+smooth_scrolling:                                   true
+scroll_beyond_last_line:                            true
+line_height_scale_percent:                          120
+max_editor_width:                                   -1
+can_cancel_go_to_line:                              true
+copy_whole_line_without_selection:                  true   # tsoding/Emacs: C-w with no region kills line
+editor_history_size:                                1024
+line_wrap_is_on_by_default:                         false
+show_line_numbers:                                  true   # tsoding: global-display-line-numbers-mode
+show_ruler_at_column:                               0
+colored_titlebar:                                   true   # Windows 11+ only
+dark_titlebar:                                      true   # tsoding runs a dark theme; match the titlebar
+hide_mouse_when_typing:                             false
+draw_indent_guides:                                 false
+auto_surround_with_brackets_and_quotes:             false  # tsoding: no electric pair / no auto-insert
+auto_close_brackets:                                false  # tsoding uses paredit only in Lisp; no auto-close globally
+prefer_system_file_dialogs:                         false  # Windows only
+persist_local_search_results:                       false  # if true, search results will stay highlighted and you have to dismiss them using the `escape` action
+load_most_recent_project_on_start:                  true
+projects_sorting_order:                             most_recent_first
+
+build_panel_stays_in_one_place:                     false  # if false, the build panel will flip to the inactive pane in two pane layouts
+build_panel_line_wrap_always_on:                    true
+build_panel_width_percent:                          50
+build_panel_height_percent:                         50
+
+save_all_file_backed_buffers_on_build:              false
+save_current_buffer_on_build:                       false
+
+color_preview_popup:                                enabled  # options: enabled, minimized, disabled
+search_is_case_sensitive_when_uppercase_present:    true
+
+detect_indentation:                                 false  # tsoding: indent-tabs-mode nil — always spaces
+indent_using:                                       spaces
+tab_size:                                           4
+
+status_bar_position:                                bottom   # options: top, bottom
+status_bar_show_cursors_off_screen:                 true
+status_bar_show_line_col:                           true
+status_bar_show_indentation:                        true
+status_bar_show_selected_text_length:               false
+
+show_scrollbar_marks:                               true
+scrollbar_width_scale:                              1.0
+scrollbar_min_opacity:                              0.0   # if you want the scrollbar to be always visible, set this to 1.0
+scrollbar_max_opacity:                              1.0
+scrollbar_fade_in_sensitivity:                      10.0  # controls when the scrollbar appears as the mouse pointer gets close
+scrollbar_fade_out_delay_seconds:                   2.0   # how long the scrollbar stays visible after scrolling
+
+# NOTE: some settings can be specified for a subset of files, based on their language or a wildcard,
+# for example:
+# [file: <wildcard1>, <wildcard2>, ...]
+# [lang: golang, cpp, c, ...]
+
+[file: *.md, *.txt]
+line_wrap_is_on_by_default:                         true
+draw_indent_guides:                                 false
+
+
+# Below is an example configuration for build commands
+# (uncomment and modify to use)
+
+# [[build commands]]
+# build_working_dir:      <build working dir for all commands>  # <- paths relative to the workspace working dir (the first one in the list) are allowed
+# open_panel_on_build:    true  #  <- any settings specified here will apply to all commands unless overridden
+# close_panel_on_success: false
+# clear_build_output_before_running: false
+# error_regex:            <compiler-specific error regex>  # see examples below
+# auto_jump_to_error:     false
+
+# [Debug Build And Run]   # <- command name. Can be arbitrary
+# build_command:          jai main.jai  # should be an executable or a script
+# build_working_dir:      <build working dir for this command only>
+# timeout_in_seconds:     5             # if you don't want a timeout, don't specify it
+# run_command:            test.exe      # will be run if build succeeds
+# run_working_dir:        W:/focus      # working dir for the run command
+# key_binding:            F5
+
+# [Run]                   # <- You could have commands that don't build anything and just run something
+# run_command:            test
+# run_working_dir:        /home/user/test
+# key_binding:            Ctrl-F5
+
+# [Release]
+# build_command:          jai first.jai - release
+# key_binding:            F9
+
+
+# Example error regexes:
+# For jai:    ^(?P<file>.*):(?P<line>\d+),(?P<col>\d+): (?P<type>Error|Warning|Info|...):* (?P<msg>.*)|^(?P<msg1>.*error LNK.*)
+# For msvc:   ^(?P<file>.*)\((?P<line>\d+),?(?P<col>\d+)?\)[ ]?: (?P<type>error|warning) (?P<msg>.*)$
+# For golang: ^(?P<file>.*):(?P<line>\d+):(?P<col>\d+): (?P<msg>.*)$
+# For gcc:    ^(?P<file>.*):(?P<line>\d+):(?P<col>\d+): (?P<type>error|warning): (?P<msg>.*) (\[(?P<msg1>.*)\])?$
+# ... let us know what regex works for you and we'll add it here
+
+# NOTE:
+# You can use the following variables in build commands:
+# %FILE%      - full path to currenly active file
+# %FILE_DIR%  - the directory of the currently active file
+# %FILE_NAME% - current file name, with extension
+# %FILE_NAME_NO_EXTENSION% - current file name, without extension
+# %BUILD_WORKING_DIR%  - working dir of the build command
+# %RUN_WORKING_DIR%    - working dir of the run command
+# %PROJECT_CONFIG_DIR% - the dir containing the active project config file
+
+
+[[keymap]]
+
+# - The first matching combination will be used, so order matters
+
+[editors]   # <- this means that the following key combos will apply only when editing text
+
+# Key combination           Action
+Alt-F4                      quit
+
+# =====================================================================
+# EMACS NAVIGATION (tsoding-style). {Shift}- means holding Shift also
+# extends the selection while moving — matches Emacs shift-select-mode.
+# =====================================================================
+
+# Char / line movement
+{Shift}-Ctrl-N              move_down                          # C-n  next-line
+{Shift}-Ctrl-P              move_up                            # C-p  previous-line
+{Shift}-Ctrl-F              move_right                         # C-f  forward-char
+{Shift}-Ctrl-B              move_left                          # C-b  backward-char
+
+# Word movement
+{Shift}-Alt-F               move_right_through_word            # M-f  forward-word
+{Shift}-Alt-B               move_left_through_word             # M-b  backward-word
+
+# Line / buffer jumps
+{Shift}-Ctrl-A              jump_to_line_start                 # C-a  move-beginning-of-line
+{Shift}-Ctrl-E              jump_to_line_end                   # C-e  move-end-of-line
+{Shift}-Alt-Shift-,         jump_to_file_start                 # M-<  beginning-of-buffer
+{Shift}-Alt-Shift-.         jump_to_file_end                   # M->  end-of-buffer
+
+# Page movement
+{Shift}-Ctrl-V              move_down_one_page                 # C-v  scroll-up-command
+{Shift}-Alt-V               move_up_one_page                   # M-v  scroll-down-command
+
+# Deletion
+Ctrl-D                      delete_right_char                  # C-d  delete-char
+Alt-D                       delete_right_through_word          # M-d  kill-word
+Alt-Backspace               delete_left_through_word           # M-DEL backward-kill-word
+Ctrl-K                      cut_to_end_of_line                 # C-k  kill-line (also in [common])
+
+# Kill / yank (Emacs cut/copy/paste)
+Ctrl-W                      cut                                # C-w  kill-region
+Alt-W                       copy                               # M-w  kill-ring-save
+Ctrl-Y                      paste                              # C-y  yank
+
+# Undo / cancel
+Ctrl-/                      undo                               # C-/  undo (overrides toggle_comment; use Ctrl-; for comment)
+Ctrl-G                      escape                             # C-g  keyboard-quit (cancels selection / dialogs)
+
+# Recenter
+Ctrl-L                      move_cursor_to_viewport_center     # C-l  recenter-top-bottom
+
+# =====================================================================
+# Multiple cursors (tsoding/Emacs mc/* style)
+# =====================================================================
+Ctrl-Shift-.                select_word_or_create_another_cursor       # C->   mc/mark-next-like-this
+Ctrl-Shift-,                revert_select_word_or_create_another_cursor # C-<  mc/mark-previous-like-this
+Ctrl-R                      revert_select_word_or_create_another_cursor
+Ctrl-Alt-A                  select_all_occurrences                     # was Ctrl-Shift-A; moved because C-a is now line-start
+Ctrl-Shift-Y                move_selection_to_next_word                # C-"  mc/skip-to-next-like-this (moved off Ctrl-' to avoid collision)
+
+# --- Duplicate line (tsoding rc/duplicate-line on C-,) ---
+Ctrl-,                      duplicate_lines
+Ctrl-Shift-D                duplicate_lines
+
+# These shortcuts can be annoying to accidentally use, so they are commented out by default
+# Shift-Backspace             delete_line_and_go_up
+# Shift-Delete                delete_line
+
+# --- Move text up/down (tsoding move-text on M-p / M-n) ---
+Alt-P                       move_selected_lines_up
+Alt-N                       move_selected_lines_down
+Alt-ArrowUp                 move_selected_lines_up
+Alt-ArrowDown               move_selected_lines_down
+
+Ctrl-J                      join_lines
+Ctrl-Shift-J                join_lines_no_spaces_in_between
+
+Ctrl-U                      change_case_cycle
+
+Tab                         indent_or_go_to_next_tabstop
+
+Ctrl-]                      indent
+Ctrl-[                      unindent
+
+Alt-Minus                   move_to_previous_editor_history
+Alt-Plus                    move_to_next_editor_history
+
+Ctrl-PageUp                 move_to_previous_buffer
+Ctrl-PageDown               move_to_next_buffer
+
+# Ctrl-/ is now undo (Emacs C-/) — use Ctrl-; for comment toggle
+Ctrl-;                      toggle_comment             # Emacs M-; comment-dwim
+# Ctrl-L is now recenter (Emacs C-l) — use Ctrl-Shift-L for select-line
+Ctrl-Shift-L                select_line
+
+Alt-K                       scroll_viewport_up
+Alt-E                       scroll_viewport_up_fast
+Alt-PageUp                  scroll_viewport_up_fast
+Alt-J                       scroll_viewport_down
+# Alt-D is now M-d (kill-word); use Alt-Shift-D for fast scroll instead
+Alt-Shift-D                 scroll_viewport_down_fast
+Alt-PageDown                scroll_viewport_down_fast
+Alt-H                       scroll_viewport_left
+# Alt-L is move_cursor_to_viewport_center? No — moved to Ctrl-L. Alt-L can stay as scroll-right.
+Alt-L                       scroll_viewport_right
+
+Ctrl-Alt-ArrowUp            scroll_viewport_up
+Ctrl-Alt-ArrowDown          scroll_viewport_down
+Ctrl-Alt-ArrowLeft          scroll_viewport_left
+Ctrl-Alt-ArrowRight         scroll_viewport_right
+
+# Alt-V is now M-v (page up). Recenter is on Ctrl-L. No separate binding needed here.
+
+{Shift}-Ctrl-ArrowUp        move_up_to_empty_line
+{Shift}-Ctrl-ArrowDown      move_down_to_empty_line
+
+Alt-Shift-I                 add_cursors_to_line_ends
+Alt-Shift-Ctrl-I            add_cursors_to_line_starts
+
+Enter                       break_line
+Ctrl-Enter                  new_line_below_without_breaking
+Ctrl-Shift-Enter            new_line_above_without_breaking
+
+NumpadEnter                 break_line
+Ctrl-NumpadEnter            new_line_below_without_breaking
+Ctrl-Shift-NumpadEnter      new_line_above_without_breaking
+
+# --- Window/editor navigation (tsoding uses windmove on Shift-arrow; Focus reserves Shift for selection, so use these) ---
+Ctrl-1                      switch_to_left_editor
+Ctrl-2                      switch_to_right_editor
+Ctrl-'                      switch_to_other_editor    # was Ctrl-, but that's now duplicate_lines
+Ctrl-Shift-'                duplicate_editor
+
+Ctrl-Alt-Shift-ArrowLeft    move_editor_to_the_left
+Ctrl-Alt-Shift-ArrowRight   move_editor_to_the_right
+
+# Ctrl-N is now Emacs next-line; use Ctrl-Shift-N to create files
+Ctrl-Alt-N                  create_new_file_on_the_side
+
+Alt-Shift-ArrowUp           create_cursor_above
+Alt-Shift-ArrowDown         create_cursor_below
+
+Alt-A                       align_cursors
+
+Alt-Z                       toggle_line_wrap
+Alt-Shift-L                 toggle_line_numbers
+
+Ctrl-Shift-Alt-N            open_another_editor_instance
+
+[open file dialog]
+
+Ctrl-Enter                  open_entry_on_the_side
+Ctrl-1                      open_entry_on_the_left
+Ctrl-2                      open_entry_on_the_right
+Shift-Enter                 open_entry_in_explorer
+
+Tab                         open_directory
+
+Backspace                   pop_directory
+
+
+[search dialog]
+
+Ctrl-Enter                  open_entry_on_the_side
+Ctrl-1                      open_entry_on_the_left
+Ctrl-2                      open_entry_on_the_right
+
+Shift-Enter                 move_up  # an alternative way to move
+
+Alt-C                       toggle_case_sensitive
+Alt-W                       toggle_whole_word
+Alt-R                       toggle_regex_search
+
+
+[common]
+
+# Common key combos may be used as a fallback if they are not defined in more specific sections.
+# For example, if "move_up" is not defined in [editors], the one in the [common] section will be matched.
+
+# tsoding/Emacs: M-x runs commands (via smex). Alt-X is the closest match in Focus.
+Alt-X                       show_commands
+
+Ctrl-Alt-P                  switch_to_project
+
+# tsoding/Emacs: C-s is isearch-forward. Bind both Ctrl-F (Focus default) and Ctrl-S to in-buffer search.
+Ctrl-S                      search_in_buffer
+Alt-F                       search_in_buffer_dropdown_mode
+Ctrl-Shift-F                search_in_project
+
+# tsoding/Emacs: C-x C-f / helm-find. Ctrl-P (open by name) is closest in Focus.
+Ctrl-P                      open_file_by_name
+Ctrl-O                      navigate_to_file
+Ctrl-Shift-O                navigate_to_file_from_root
+Ctrl-Tab                    switch_between_open_files
+
+Ctrl-G                      go_to_line          # also Emacs C-g cancel — Escape covers that below
+
+Ctrl-C                      copy
+Ctrl-X                      cut
+Ctrl-V                      paste
+
+Ctrl-Z                      undo
+Ctrl-Shift-Z                redo
+
+Ctrl-D                      select_word
+Ctrl-A                      select_all
+
+Ctrl-K                      cut_to_end_of_line                 # matches Emacs C-k kill-line
+Ctrl-Shift-Delete           delete_to_end_of_line
+Ctrl-Shift-Backspace        delete_to_start_of_line
+
+Ctrl-W                      close_current_editor               # NOTE: Emacs C-w is kill-region; no direct equivalent
+Ctrl-Shift-W                close_other_editor
+
+Escape                      escape  # combines close_dialog and remove_additional_cursors (also serves as Emacs C-g)
+
+Ctrl-Shift-L                toggle_expand
+
+F11                         toggle_fullscreen
+
+Enter                       open_entry_in_place
+
+Tab                         focus_next_ui_element
+Shift-Tab                   focus_previous_ui_element
+
+# {Shift}- means shift is optional, the key combination will still be matched.
+# NOTE: in this editor the Shift key is hard-coded to extend selection when held
+{Shift}-ArrowUp             move_up
+{Shift}-Ctrl-ArrowUp        move_up_fast
+{Shift}-PageUp              move_up_one_page
+
+{Shift}-ArrowDown           move_down
+{Shift}-Ctrl-ArrowDown      move_down_fast
+{Shift}-PageDown            move_down_one_page
+
+{Shift}-ArrowLeft           move_left
+{Shift}-Alt-ArrowLeft       move_left_by_character_type
+{Shift}-Ctrl-ArrowLeft      move_left_through_word_throttled
+{Shift}-Meta-ArrowLeft      move_left_through_word
+
+{Shift}-ArrowRight          move_right
+{Shift}-Alt-ArrowRight      move_right_by_character_type
+{Shift}-Ctrl-ArrowRight     move_right_through_word_throttled
+{Shift}-Meta-ArrowRight     move_right_through_word
+
+{Shift}-Home                jump_to_line_start
+{Shift}-End                 jump_to_line_end
+{Shift}-Ctrl-Home           jump_to_file_start
+{Shift}-Ctrl-End            jump_to_file_end
+{Shift}-Ctrl-M              jump_to_matching_bracket
+
+{Shift}-Backspace           delete_left_char
+{Shift}-Delete              delete_right_char
+{Shift}-Alt-Backspace       delete_left_by_character_type
+{Shift}-Alt-Delete          delete_right_by_character_type
+{Shift}-Meta-Backspace      delete_left_through_word
+{Shift}-Meta-Delete         delete_right_through_word
+Ctrl-Backspace              delete_left_by_character_type_fast
+Ctrl-Delete                 delete_right_by_character_type_fast
+
+Ctrl-Plus                   increase_font_size
+Ctrl-Minus                  decrease_font_size
+Ctrl-0                      reset_font_size_to_default
+Ctrl-MouseMiddle            reset_font_size_to_default
+
+F8                          go_to_next_build_error
+Ctrl-F8                     go_to_next_build_error_on_the_side
+Shift-F8                    go_to_previous_build_error
+Shift-Ctrl-F8               go_to_previous_build_error_on_the_side
+
+
+[[style]]
+
+[fonts]
+# tsoding uses Consolas-13 on Windows, Iosevka-20 on Linux
+font:          default
+font_ui:       default
+font_ui_bold:  default
+font_size:     16
+font_ui_size:  15
+anti_aliasing: lcd  # options: lcd, normal
+hinting:       true
+
+[colors]
+# Palette inspired by gruber-darker (rexim/tsoding's Emacs theme).
+# Base bg #181818, fg #e4e4ef, yellow #ffdd33, red #f43841, green #73c936,
+# brown #cc8c3c, niagara #96a6c8, wisteria #9e95c7, quartz #95a99f, comment #99968b.
+background0:                            181818FF
+background1:                            101010FF
+background2:                            232323FF
+background3:                            282828FF
+background4:                            453D41FF
+
+# NOTE: region_scope colors only work for Jai at the moment
+region_scope_export:                    181818FF
+region_scope_file:                      141414FF
+region_scope_module:                    232323FF
+
+region_header:                          524A4FFF
+region_success:                         52682DFF
+region_warning:                         936830FF
+region_error:                           772630FF
+region_heredoc:                         0E0E0EFF
+
+selection_active:                       453D41FF
+selection_inactive:                     453D417F
+selection_highlight:                    E4E4EF26
+search_result_active:                   FFDD33CC
+search_result_inactive:                 FFDD3340
+scrollbar:                              E4E4EF19
+scrollbar_hover:                        E4E4EF4C
+scrollbar_background:                   1010104C
+cursor:                                 FFDD33FF
+cursor_inactive:                        96660FFF
+paste_animation:                        453D41FF
+splitter:                               282828FF
+splitter_hover:                         453D41FF
+ruler:                                  E4E4EF26
+indent_guide:                           E4E4EF26
+letter_highlight:                       FFDD33FF
+list_cursor_lite:                       E4E4EF19
+list_cursor:                            E4E4EF4C
+shadow_dark:                            0808087F
+shadow_transparent:                     08080800
+text_input_label:                       524A4FFF
+char_under_cursor:                      181818FF
+bracket_highlight:                      FFDD3340
+
+ui_default:                             E4E4EFFF
+ui_dim:                                 99968BFF
+ui_neutral:                             4C4C4CFF
+ui_warning:                             FFDD33FF
+ui_warning_dim:                         936830FF
+ui_error:                               F43841FF
+ui_error_bright:                        FF0000FF
+ui_success:                             73C936FF
+
+build_panel_background:                 232323FF
+build_panel_scrollbar:                  E4E4EF19
+build_panel_scrollbar_hover:            E4E4EF4C
+build_panel_scrollbar_background:       1010104C
+build_panel_title_bar:                  282828FF
+
+code_default:                           E4E4EFFF
+code_invalid:                           FF0000FF
+
+code_string_literal:                    73C936FF
+code_multiline_string:                  73C936FF
+code_raw_string:                        73C936FF
+code_char_literal:                      73C936FF
+
+code_identifier:                        E4E4EFFF
+code_note:                              CC8C3CFF
+code_number:                            FF9F00FF
+
+code_error:                             F43841FF
+code_warning:                           FFDD33FF
+code_highlight:                         FFDD33FF
+
+code_comment:                           99968BFF
+code_multiline_comment:                 99968BFF
+
+code_operation:                         E4E4EFFF
+code_punctuation:                       E4E4EFFF
+
+code_keyword:                           F43841FF
+code_type:                              96A6C8FF
+code_value:                             FF9F00FF
+code_modifier:                          F43841FF
+code_attribute:                         F43841FF
+code_enum_variant:                      9E95C7FF
+code_macro:                             CC8C3CFF
+code_function:                          FFDD33FF
+
+code_builtin_variable:                  9E95C7FF
+code_builtin_function:                  CC8C3CFF
+code_builtin_exception:                 F43841FF
+
+code_directive:                         CC8C3CFF
+code_directive_modifier:                CC8C3CFF
+
+code_header:                            FFDD33FF
+code_header2:                           CC8C3CFF
+code_header3:                           CC8C3CFF
+code_header4:                           CC8C3CFF
+code_header5:                           CC8C3CFF
+code_header6:                           CC8C3CFF
