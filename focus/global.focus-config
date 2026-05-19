@@ -33,7 +33,7 @@
 maximize_on_start:                                  false
 open_on_the_biggest_monitor:                        false
 cursor_as_block:                                    true
-cursor_blink_time_in_seconds:                       5
+cursor_blink_time_in_seconds:                       0
 highlight_selection_occurrences:                    true
 highlight_line_with_cursor:                         false
 highlight_matching_brackets:                        true   # tsoding: show-paren-mode
@@ -54,7 +54,7 @@ show_ruler_at_column:                               0
 colored_titlebar:                                   true   # Windows 11+ only
 dark_titlebar:                                      true   # tsoding runs a dark theme; match the titlebar
 hide_mouse_when_typing:                             false
-draw_indent_guides:                                 false
+draw_indent_guides:                                 true
 auto_surround_with_brackets_and_quotes:             false  # tsoding: no electric pair / no auto-insert
 auto_close_brackets:                                false  # tsoding uses paredit only in Lisp; no auto-close globally
 prefer_system_file_dialogs:                         false  # Windows only
@@ -75,7 +75,7 @@ search_is_case_sensitive_when_uppercase_present:    true
 
 detect_indentation:                                 false  # tsoding: indent-tabs-mode nil — always spaces
 indent_using:                                       spaces
-tab_size:                                           4
+tab_size:                                           2
 
 status_bar_position:                                bottom   # options: top, bottom
 status_bar_show_cursors_off_screen:                 true
@@ -192,6 +192,10 @@ Ctrl-W                      cut                                # C-w  kill-regio
 Alt-W                       copy                               # M-w  kill-ring-save
 Ctrl-Y                      paste                              # C-y  yank
 
+
+Ctrl-Z                      save
+Shift-Ctrl-Z                save_as
+
 # Undo / cancel
 Ctrl-/                      undo                               # C-/  undo (overrides toggle_comment; use Ctrl-; for comment)
 Ctrl-G                      escape                             # C-g  keyboard-quit (cancels selection / dialogs)
@@ -261,8 +265,8 @@ Ctrl-Alt-ArrowRight         scroll_viewport_right
 
 # Alt-V is now M-v (page up). Recenter is on Ctrl-L. No separate binding needed here.
 
-{Shift}-Ctrl-ArrowUp        move_up_to_empty_line
-{Shift}-Ctrl-ArrowDown      move_down_to_empty_line
+{Shift}-Ctrl-Alt-P        move_up_to_empty_line
+{Shift}-Ctrl-Alt-N      move_down_to_empty_line
 
 Alt-Shift-I                 add_cursors_to_line_ends
 Alt-Shift-Ctrl-I            add_cursors_to_line_starts
@@ -285,7 +289,7 @@ Ctrl-Alt-Shift-ArrowLeft    move_editor_to_the_left
 Ctrl-Alt-Shift-ArrowRight   move_editor_to_the_right
 
 # Ctrl-N is now Emacs next-line; use Ctrl-Shift-N to create files
-Ctrl-Alt-N                  create_new_file_on_the_side
+# Ctrl-Alt-N                  create_new_file_on_the_side
 
 Alt-Shift-ArrowUp           create_cursor_above
 Alt-Shift-ArrowDown         create_cursor_below
@@ -294,8 +298,6 @@ Alt-A                       align_cursors
 
 Alt-Z                       toggle_line_wrap
 Alt-Shift-L                 toggle_line_numbers
-
-Ctrl-Shift-Alt-N            open_another_editor_instance
 
 [open file dialog]
 
@@ -330,8 +332,6 @@ Alt-R                       toggle_regex_search
 # tsoding/Emacs: M-x runs commands (via smex). Alt-X is the closest match in Focus.
 Alt-X                       show_commands
 
-Ctrl-Alt-P                  switch_to_project
-
 # tsoding/Emacs: C-s is isearch-forward. Bind both Ctrl-F (Focus default) and Ctrl-S to in-buffer search.
 Ctrl-S                      search_in_buffer
 Alt-F                       search_in_buffer_dropdown_mode
@@ -349,11 +349,11 @@ Ctrl-C                      copy
 Ctrl-X                      cut
 Ctrl-V                      paste
 
-Ctrl-Z                      undo
-Ctrl-Shift-Z                redo
+# Ctrl-Z                      undo
+# Ctrl-Shift-Z                redo
 
-Ctrl-D                      select_word
-Ctrl-A                      select_all
+# Ctrl-D                      select_word
+# Ctrl-A                      select_all
 
 Ctrl-K                      cut_to_end_of_line                 # matches Emacs C-k kill-line
 Ctrl-Shift-Delete           delete_to_end_of_line
