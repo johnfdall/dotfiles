@@ -1,7 +1,8 @@
 @import "colors.css"; 
 
 * {
-    font-family: "MesloLGS Nerd Font Mono Bold";
+    /* REMOVED "Mono" and added standard Nerd Font + Symbols fallback */
+    font-family: "MesloLGS Nerd Font", "Symbols Nerd Font", "MesloLGS Nerd Font Mono Bold";
     font-size: 14px;
     min-height: 0;
     font-weight: bold;
