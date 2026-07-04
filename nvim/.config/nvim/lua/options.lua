@@ -1,7 +1,8 @@
 local o = vim.o
 
 -- global variables
-vim.g.mapleader   = " "
+vim.g.mapleader          = " "
+vim.g.loaded_gtags_cscope = 1  -- disable system gtags-cscope plugin (cscope removed in nvim 0.9)
 
 -- options
 o.number         = true
@@ -29,6 +30,8 @@ vim.api.nvim_set_hl(0, 'FloatBorder', { fg = '#ffffff' })
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
+    local ft = vim.bo[args.buf].filetype
+    if ft == 'c' or ft == 'cpp' then return end
     vim.keymap.set('n', 'K', function()
       vim.lsp.buf.hover({ border = 'double' })
     end, { buffer = args.buf })

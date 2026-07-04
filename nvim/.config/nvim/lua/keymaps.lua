@@ -42,3 +42,10 @@ map("n", "<leader>sx", ":close<CR>")
 
 map("n", "<leader><leader>", ":restart<CR>")
 
+-- After any `:make`, open the quickfix window if (and only if) there were
+-- errors/warnings. Lets `:make build` drop you straight into the diagnostics.
+vim.api.nvim_create_autocmd('QuickFixCmdPost', {
+  pattern = 'make',
+  command = 'cwindow',
+})
+
