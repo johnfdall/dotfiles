@@ -30,8 +30,6 @@ vim.api.nvim_set_hl(0, 'FloatBorder', { fg = '#ffffff' })
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
-    local ft = vim.bo[args.buf].filetype
-    if ft == 'c' or ft == 'cpp' then return end
     vim.keymap.set('n', 'K', function()
       vim.lsp.buf.hover({ border = 'double' })
     end, { buffer = args.buf })

@@ -1,4 +1,5 @@
--- ctags-based navigation for all C/C++ projects. LSP-backed languages are unaffected.
+-- ctags-based navigation for C/C++ projects (used where clangd is disabled, e.g.
+-- unity builds with a `.noclangd` marker). LSP-backed languages are unaffected.
 
 -- ';' makes Vim search upward from the file's dir to find the project tags file.
 vim.o.tags = './tags;,tags'

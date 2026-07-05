@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 vim.pack.add({
-  'https://github.com/ellisonleao/gruvbox.nvim',
+  'https://github.com/fraeso/xcodedark.nvim',
   'https://github.com/nvim-treesitter/nvim-treesitter',
   'https://github.com/nvim-lua/plenary.nvim',
   'https://github.com/nvim-telescope/telescope.nvim',
@@ -84,55 +84,16 @@ if ok then
 end
 
 -- colorscheme
-require("gruvbox").setup({
-    terminal_colors = true,
-    undercurl = true,
-    underline = true,
-    bold = true,
-    italic = {
-        strings = true,
-        emphasis = true,
-        comments = true,
-        operators = false,
-        folds = true,
-    },
-    strikethrough = true,
-    invert_selection = false,
-    invert_signs = false,
-    invert_tabline = false,
-    invert_intend_guides = false,
-    inverse = true,
-    contrast = "hard",
-    palette_overrides = {
-        dark0_hard = "#000000",
-    },
-    overrides = {
-        Normal = { bg = "NONE" },
-        NormalNC = { bg = "NONE" },
-        StatusLine = { fg = "#000000", bg = "#DDDDDD" },
-        StatusLineNC = { bg = "NONE" },
-        VertSplit = { bg = "NONE" },
-        TabLineFill = { bg = "NONE" },
-        Pmenu = { bg = "NONE" },
-        PmenuSbar = { bg = "NONE" },
-        WinSeparator = { bg = "NONE" },
-        SignColumn = { bg = "NONE" },
-        NormalFloat = { bg = "NONE" },
-        NvimTreeNormal = { bg = "NONE" },
-        NvimTreeEndOfBuffer = { bg = "NONE" },
-        NvimTreeVertSplit = { bg = "NONE" },
-        NvimTreeFolderName = { bg = "NONE" },
-        NvimTreeFolderIcon = { bg = "NONE" },
-        NvimTreeOpenedFolderName = { bg = "NONE" },
-        NvimTreeIndentMarker = { bg = "NONE" },
-        NvimTreeNormalNC = { bg = "NONE" },
-        NvimTreeCursorLine = { bg = "#111111" },
-    },
-    dim_inactive = false,
-    transparent_mode = false,
+require('xcodedark').setup({
+  transparent = true,
+  terminal_colors = true,
+  integrations = {
+    telescope = true,        -- Telescope fuzzy finder
+    nvim_tree = true,        -- File explorer
+  },
 })
-vim.o.background = "dark"
-vim.cmd.colorscheme('gruvbox')
+
+vim.cmd.colorscheme('xcodedark')
 
 -- telescope
 local telescope = require('telescope')

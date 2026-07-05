@@ -24,6 +24,20 @@ vim.lsp.config['sourcekit'] = {
 
 vim.lsp.enable('sourcekit')
 
+vim.lsp.config['clangd'] = {
+  cmd = { 'clangd' },
+  filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
+  root_dir = function(bufnr, on_dir)
+    -- Per-project opt-out: a `.noclangd` file anywhere up the tree disables clangd
+    if vim.fs.root(bufnr, '.noclangd') then
+      return -- don't call on_dir → clangd won't attach; ctags takes over
+    end
+    on_dir(vim.fs.root(bufnr, { 'compile_commands.json', '.git' })
+           or vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)))
+  end,
+}
+
+vim.lsp.enable('clangd')
 
 vim.lsp.config['rust_analyzer'] = {
   cmd = { 'rust-analyzer' },
