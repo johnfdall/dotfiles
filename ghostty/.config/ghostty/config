@@ -4,3 +4,4 @@ font-family = JetBrainsMonoNL Nerd Font Mono
 cursor-style = block
 cursor-style-blink = false
 background-opacity = 0.8
+window-decoration = false
