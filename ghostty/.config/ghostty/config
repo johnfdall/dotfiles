@@ -1,30 +1,6 @@
-# xcodedark theme (matches nvim's xcodedark.nvim colors.lua)
-
-background = 292a31
-foreground = ffffff
-
-cursor-color = ff5257
-cursor-text = 292a31
-
-selection-background = ff7ab2
-selection-foreground = 292a31
-
-palette = 0=#292a31
-palette = 1=#f14c4c
-palette = 2=#67b7a4
-palette = 3=#f1c232
-palette = 4=#6bdfff
-palette = 5=#ff7ab2
-palette = 6=#4eb0cc
-palette = 7=#ffffff
-palette = 8=#6c7986
-palette = 9=#ff6b6b
-palette = 10=#5ac8fa
-palette = 11=#ffd60a
-palette = 12=#007aff
-palette = 13=#af52de
-palette = 14=#40e0d0
-palette = 15=#ffffff
-
-font-family = JetBrainsMono Nerd Font
-font-size = 13
+# Ghostty's built-in "Xcode Dark hc" theme (matches nvim's xcodedark.nvim in spirit)
+theme = Xcode Dark hc
+font-family = JetBrainsMonoNL Nerd Font Mono
+cursor-style = block
+cursor-style-blink = false
+background-opacity = 0.8
