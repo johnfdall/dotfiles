@@ -1,0 +1,88 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# xcodedark palette (matches nvim's xcodedark.nvim colors.lua)
+palette = "xcodedark"
+
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$nodejs\
+$rust\
+$golang\
+$python\
+$cmd_duration\
+$line_break\
+$character"""
+
+[palettes.xcodedark]
+fg = "#FFFFFF"
+fg_dark = "#9D9D9D"
+fg_darker = "#6C7986"
+accent = "#FF7AB2"
+purple = "#D2A8FF"
+cyan = "#6BDFFF"
+teal = "#4EB0CC"
+green = "#67B7A4"
+yellow = "#F1C232"
+orange = "#FD8F3F"
+red = "#F14C4C"
+blue = "#0099FF"
+
+[username]
+style_user = "purple bold"
+style_root = "red bold"
+format = "[$user]($style)"
+show_always = false
+
+[hostname]
+ssh_only = true
+style = "fg_darker"
+format = "[@$hostname]($style) "
+disabled = false
+
+[directory]
+style = "cyan bold"
+truncation_length = 3
+truncate_to_repo = true
+format = "[$path]($style)[$read_only](red) "
+
+[git_branch]
+symbol = " "
+style = "accent bold"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "yellow bold"
+format = "([$all_status$ahead_behind]($style)) "
+
+[nodejs]
+symbol = " "
+style = "green bold"
+format = "[$symbol($version)]($style) "
+
+[rust]
+symbol = " "
+style = "orange bold"
+format = "[$symbol($version)]($style) "
+
+[golang]
+symbol = " "
+style = "cyan bold"
+format = "[$symbol($version)]($style) "
+
+[python]
+symbol = " "
+style = "yellow bold"
+format = "[$symbol($version)]($style) "
+
+[cmd_duration]
+min_time = 2000
+style = "fg_dark"
+format = "took [$duration]($style) "
+
+[character]
+success_symbol = "[❯](accent bold)"
+error_symbol = "[❯](red bold)"
