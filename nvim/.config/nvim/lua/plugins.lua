@@ -3,6 +3,10 @@ vim.api.nvim_create_autocmd('PackChanged', {
     if ev.data.spec.name == 'telescope-fzf-native.nvim' then
       vim.system({ 'make' }, { cwd = ev.data.path })
     end
+    -- On master, parsers must be recompiled when the plugin updates.
+    if ev.data.spec.name == 'nvim-treesitter' and ev.data.kind == 'update' then
+      pcall(vim.cmd, 'TSUpdate')
+    end
   end,
 })
 
@@ -15,7 +19,11 @@ vim.api.nvim_create_autocmd('FileType', {
 
 vim.pack.add({
   'https://github.com/fraeso/xcodedark.nvim',
-  'https://github.com/nvim-treesitter/nvim-treesitter',
+  -- Pin to `master`: the default `main` branch compiles grammars with the
+  -- `tree-sitter` CLI (an extra per-machine dependency we don't have), while
+  -- `master` ships pre-generated parser sources and builds them with the plain
+  -- C compiler that's already on both machines.
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'master' },
   'https://github.com/nvim-lua/plenary.nvim',
   'https://github.com/nvim-telescope/telescope.nvim',
   'https://github.com/nvim-telescope/telescope-fzf-native.nvim',
@@ -74,14 +82,19 @@ require("nvim-tree").setup({
   update_focused_file = { enable = true }
 })
 
--- treesitter
-local ok, treesitter = pcall(require, 'nvim-treesitter.configs')
-if ok then
-  treesitter.setup({
-    ensure_installed = { 'c', 'cpp', 'typescript', 'tsx', 'javascript', 'jsdoc', 'rust', 'markdown', 'markdown_inline' },
-    highlight = { enable = true },
-  })
-end
+-- treesitter (nvim-treesitter `master` branch API)
+-- `highlight.enable` wires up the treesitter highlighter per filetype;
+-- `auto_install` compiles any missing parser (with `cc`) the first time you
+-- open that filetype, so C/C++ etc. get proper highlighting without an LSP.
+require('nvim-treesitter.configs').setup({
+  ensure_installed = {
+    'c', 'cpp', 'rust', 'lua', 'vim', 'vimdoc', 'query',
+    'typescript', 'tsx', 'javascript', 'jsdoc', 'markdown', 'markdown_inline',
+  },
+  auto_install = true,
+  highlight = { enable = true },
+  indent = { enable = true },
+})
 
 -- colorscheme
 require('xcodedark').setup({
