@@ -102,8 +102,18 @@ separate job. `accounts/` is a directory so a second account can slot in.
 
 6. `neomutt`.
 
+7. **Wire up the shell.** `~/.bashrc` is not a stow package — it differs too
+   much per machine — so these two lines have to be added by hand:
+
+       export GPG_TTY=$(tty)
+       [ -r "$HOME/.config/bash/mail.sh" ] && . "$HOME/.config/bash/mail.sh"
+
+   The first gives terminal pinentry a tty to draw on (without it, passphrase
+   prompts over SSH fail). The second defines `mail-unlock`; `stow bash` only
+   places the file, it can't source it.
+
 After a reboot the GPG key is no longer cached, so Bridge can't unlock its
-vault until you run `mail-unlock` (from the `bash` package) once per session.
+vault until you run `mail-unlock` once per session.
 
 ## Things that will bite you
 
