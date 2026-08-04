@@ -73,7 +73,19 @@ separate job. `accounts/` is a directory so a second account can slot in.
        /usr/lib/protonmail/bridge/bridge --cli     # Linux
        # macOS: just open the Bridge app
 
-   At the `>>>` prompt: `login`, then `info`, then `exit`.
+   At the `>>>` prompt: `login`, then `change mode <n>` to put the account in
+   **combined** address mode, then `info`, then `exit`.
+
+   Combined mode is what makes every address on the account share one login
+   and one INBOX; in split mode each address is a separate login that sees
+   only its own mail. The setting lives in Bridge's local vault, so it is
+   **per-installation** and must be set on every machine — `list` shows the
+   current mode.
+
+   Give the CLI ~30s after it starts before issuing `change mode`. It has to
+   reach the Proton API first, and until it does the account shows `locked`
+   and the command fails with `no such user` — while still printing
+   "changed to combined". Re-run `list` to confirm it actually took.
 
 4. **Store this machine's mailbox password.** Every Bridge install has its own
    vault and generates its own password, so this is per-machine and the

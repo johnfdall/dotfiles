@@ -13,8 +13,16 @@
 set ssl_force_tls = yes
 set send_charset = "us-ascii:utf-8"
 
+# Bridge is in *combined* address mode (`change mode` in its CLI), so one
+# login carries every address on the account and INBOX holds mail sent to any
+# of them. The IMAP username is the account's primary address, which is not
+# necessarily the address you send as -- see `from` below.
+#
+# Address mode lives in Bridge's local vault, so it is per-installation: a
+# machine still in split mode logs in as the individual address instead, and
+# only sees that address's mail.
 set from      = "johnfdall@pm.me"
-set imap_user = "johnfdall@pm.me"
+set imap_user = "john.fredrik.dall@protonmail.com"
 set imap_pass = "`pass show proton/bridge`"
 
 set folder    = "imap://127.0.0.1:1143"
@@ -28,7 +36,7 @@ set trash     = "+Trash"
 # [Protonmail]/, as the old ~/.mutt/muttrc assumed.
 mailboxes "+INBOX" "+Drafts" "+Sent" "+Archive" "+Starred" "+Spam" "+Trash" "+All Mail"
 
-set smtp_url  = "smtp://johnfdall@pm.me@127.0.0.1:1025"
+set smtp_url  = "smtp://john.fredrik.dall@protonmail.com@127.0.0.1:1025"
 set smtp_pass = "`pass show proton/bridge`"
 
 set smtp_authenticators = "login:plain"

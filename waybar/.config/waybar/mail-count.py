@@ -18,7 +18,10 @@ import sys
 
 HOST = "127.0.0.1"
 PORT = 1143
-USER = "johnfdall@pm.me"
+# Must match imap_user in neomutt's accounts/proton.rc. In Bridge's combined
+# address mode this is the account's primary address, and INBOX carries mail
+# for every address on the account -- so one count covers them all.
+USER = "john.fredrik.dall@protonmail.com"
 PASS_ENTRY = "proton/bridge"
 BRIDGE_CERT = pathlib.Path.home() / ".config/protonmail/bridge-v3/cert.pem"
 MAILBOX = "INBOX"

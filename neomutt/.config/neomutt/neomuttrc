@@ -22,8 +22,21 @@ set pgp_timeout = 1800
 # Credentials are pulled from `pass` at parse time; see accounts/proton.rc.
 source "~/.config/neomutt/accounts/proton.rc"
 
+# Every address this account receives on. `alternates` is what makes neomutt
+# recognise a message as addressed to you -- it drives the "to me" index flags
+# and stops group-reply from CC'ing you back.
+alternates '^johnfdall@pm\.me$' '^john\.fredrik\.dall@protonmail\.com$'
+
+# Reply from whichever of those addresses the message was sent to, rather than
+# always from $from. Without this, mail to one address gets answered from the
+# other, which looks like a different person to the recipient.
+set reverse_name
+set reverse_realname
+
+# Envelope sender follows the From header (including reverse_name's choice);
+# pinning envelope_from_address here would override that and make the envelope
+# disagree with the visible From.
 set use_envelope_from = yes
-set envelope_from_address = "johnfdall@pm.me"
 
 ########################################
 # Mailboxes and behavior
