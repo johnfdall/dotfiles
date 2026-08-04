@@ -47,6 +47,14 @@ vim.lsp.config['rust_analyzer'] = {
 
 vim.lsp.enable('rust_analyzer')
 
+-- C# via roslyn.nvim (the plugin calls vim.lsp.enable('roslyn') itself).
+-- The server is a dotnet global tool; ~/.dotnet/tools isn't on PATH, hence
+-- the absolute path. filetypes drops the default 'razor' — not needed.
+vim.lsp.config('roslyn', {
+  cmd = { vim.fn.expand('~/.dotnet/tools/roslyn-language-server'), '--stdio' },
+  filetypes = { 'cs' },
+})
+
 vim.lsp.config['ts_ls'] = {
   cmd = { 'typescript-language-server', '--stdio' },
   filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },

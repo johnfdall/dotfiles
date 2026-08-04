@@ -31,6 +31,7 @@ vim.pack.add({
   'https://github.com/christoomey/vim-tmux-navigator',
   'https://github.com/nvim-tree/nvim-web-devicons',
   'https://github.com/shortcuts/no-neck-pain.nvim',
+  'https://github.com/seblyng/roslyn.nvim',
 })
 
 -- noneckpain
