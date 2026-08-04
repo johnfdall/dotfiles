@@ -7,3 +7,5 @@ nvim/.config/nvim/plugin/packer_compiled.lua
 neomutt/.config/neomutt/cache/
 neomutt/.config/neomutt/certificates
 neomutt/.config/neomutt/alias.local
+# Per-machine overrides (pgp_default_key etc.); sourced last by neomuttrc.
+neomutt/.config/neomutt/local.rc

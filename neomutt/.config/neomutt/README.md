@@ -26,25 +26,35 @@ separate job. `accounts/` is a directory so a second account can slot in.
 
 ## Steps (same on every machine)
 
-1. **A GPG key must exist**, because `pass` is encrypted to it. Either import
-   your existing secret key or `gpg --full-generate-key`. The *password store
-   contents* do not need syncing — see step 4.
+1. **A GPG key must exist**, because `pass` is encrypted to it. Simplest is to
+   generate one locally — the store holds exactly one secret, this machine's
+   own Bridge password, so nothing needs sharing between machines:
 
-   Then `pass init` it — **by key ID, never by email address**:
-
-       gpg --list-secret-keys --keyid-format=long    # confirm you hold the SECRET key
+       gpg --full-generate-key
+       gpg --list-secret-keys --keyid-format=long
        pass init <long-key-id>
 
-   Proton publishes public keys for its own addresses, so initialising against
-   `john.fredrik.dall@protonmail.com` can resolve to Proton's key instead of
-   yours. That silently produces a store you can encrypt to but never decrypt.
-   A key ID is unambiguous.
+   **Init by key ID, never by email address.** Proton publishes public keys for
+   its own addresses, so `pass init john.fredrik.dall@protonmail.com` can
+   resolve to Proton's key rather than yours — silently producing a store you
+   can encrypt to but never decrypt. Check the key is listed under
+   `--list-secret-keys` before trusting it.
 
-   An imported key also starts untrusted — ownertrust lives in the trustdb and
-   doesn't travel with the key — so `pass insert` fails with *"no assurance
-   this key belongs to the named user"* until:
+   If you'd rather reuse one key everywhere (worth it if you sign outgoing
+   mail — otherwise recipients see a different key per machine):
 
-       gpg --edit-key <long-key-id>      # trust -> 5 -> y -> save
+       ssh -t <other-host> 'gpg --export-secret-keys --armor <id>' | gpg --import
+       gpg --edit-key <id>       # trust -> 5 -> y -> save
+
+   The `-t` is required: without a terminal, gpg-agent can't prompt and the
+   export fails with *Inappropriate ioctl for device*. Imported keys also start
+   untrusted, since ownertrust lives in the trustdb and doesn't travel with the
+   key, so `pass insert` fails until trust is set.
+
+   With a locally generated key, set the signing key for this machine in
+   `~/.config/neomutt/local.rc` (gitignored, sourced last):
+
+       set pgp_default_key = "<this machine's long key id>"
 
 2. **macOS only — fix the pinentry path.** `gpg-agent.conf` needs an absolute
    path and home directories differ:

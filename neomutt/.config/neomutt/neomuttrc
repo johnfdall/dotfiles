@@ -112,3 +112,12 @@ set ssl_ca_certificates_file = "~/.config/protonmail/bridge-v3/cert.pem"
 
 source "~/.config/neomutt/bindings.rc"
 source "~/.config/neomutt/colors.rc"
+
+# Optional per-machine overrides, sourced last so they win. Gitignored: this
+# is where anything machine-specific belongs -- most obviously pgp_default_key,
+# since a key generated locally differs on every box.
+#
+# Sourced via a command (note the trailing `|`) rather than a plain path,
+# because neomutt errors on a missing file and there is no conditional source.
+# `cat` of a nonexistent file simply yields nothing.
+source "cat ~/.config/neomutt/local.rc 2>/dev/null |"
