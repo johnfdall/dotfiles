@@ -93,7 +93,12 @@ require('nvim-treesitter.configs').setup({
   },
   auto_install = true,
   highlight = { enable = true },
-  indent = { enable = true },
+  -- Classic nvim-treesitter's C/C++ indent queries crash on this Neovim
+  -- version (its `kind-eq?` predicate assumes single-node captures; core
+  -- now hands predicates a node list), silently zeroing indentexpr's result.
+  -- Built-in `cindent` (set by $VIMRUNTIME/indent/c.vim) already handles C
+  -- fine, so let it own indentation instead.
+  indent = { enable = true, disable = { 'c', 'cpp' } },
 })
 
 -- colorscheme
