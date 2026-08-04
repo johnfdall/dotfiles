@@ -67,6 +67,7 @@ button:hover {
 #network,
 #mode,
 #language,
+#custom-mail,
 #scratchpad {
   margin-top: 2px;
   margin-bottom: 2px;
@@ -109,6 +110,21 @@ button:hover {
 #network {
     color: @yellow;
     border-bottom: 2px solid @yellow;
+}
+
+#custom-mail {
+    color: @orange;
+    border-bottom: 2px solid @orange;
+}
+
+#custom-mail.read {
+    color: @fg_darker;
+    border-bottom: 2px solid @fg_darker;
+}
+
+#custom-mail.error {
+    color: @red;
+    border-bottom: 2px solid @red;
 }
 
 #idle_inhibitor {

@@ -1,0 +1,23 @@
+[Unit]
+Description=ProtonMail Bridge (local IMAP/SMTP for neomutt)
+Documentation=https://proton.me/mail/bridge
+# Bridge unlocks its vault via `pass`, which needs gpg-agent up first.
+After=gpg-agent.socket graphical-session.target
+Wants=gpg-agent.socket
+
+[Service]
+Type=simple
+# The headless Go daemon, NOT /usr/bin/protonmail-bridge -- that one is the Qt
+# GUI launcher, which aborts with "could not connect to display" wherever
+# there's no X/Wayland session (over SSH, or on a machine with no session yet).
+# This binary has zero Qt dependencies.
+ExecStart=/usr/lib/protonmail/bridge/bridge --noninteractive
+Restart=on-failure
+RestartSec=10
+# Bridge is the only thing standing between neomutt and "no mail at all", and
+# it fails quietly -- unlike waybar/mako/hyprpaper, whose death is visible.
+# Hence a unit with restart semantics rather than a hyprland exec-once.
+TimeoutStopSec=20
+
+[Install]
+WantedBy=default.target

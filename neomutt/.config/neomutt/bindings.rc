@@ -1,0 +1,86 @@
+########################################
+# Vim-like keybindings
+#
+# Note on Ctrl-hjkl: those are deliberately NOT bound here. The tmux `is_vim`
+# check in ~/.tmux.conf matches only (view|vim|nvim|fzf), so Ctrl-hjkl stays
+# pane-switching while neomutt is focused -- which is what we want.
+########################################
+
+# Clear a few conflicting defaults
+bind generic z noop
+bind index,pager,attach g noop
+
+bind index J next-line
+bind index K previous-line
+
+# Index: j/k move between messages
+bind index j next-entry
+bind index k previous-entry
+
+# Pager: j/k scroll within the message
+bind pager j next-line
+bind pager k previous-line
+
+bind attach j next-entry
+bind attach k previous-entry
+
+# ^F / ^B = page down/up
+bind generic,index,pager \Cf next-page
+bind generic,index,pager \Cb previous-page
+
+# ^D / ^U = half-page down/up
+bind generic,index,pager \Cd half-down
+bind generic,index,pager \Cu half-up
+
+# gg / G = first/last
+bind generic gg first-entry
+bind index G last-entry
+bind pager gg top
+bind pager G bottom
+bind attach gg first-entry
+bind attach G  last-entry
+
+# Fetch / sync
+bind index R imap-fetch-mail
+bind pager S sync-mailbox
+bind index S sync-mailbox
+
+# zt / zz / zb
+bind generic zt current-top
+bind generic zz current-middle
+bind generic zb current-bottom
+
+# za / zA = fold threads
+bind index za collapse-thread
+bind index zA collapse-all
+
+# N = search opposite direction
+bind index,pager N search-opposite
+
+########################################
+# Sidebar (mirrors nvim-tree muscle memory)
+########################################
+
+bind index,pager B sidebar-toggle-visible
+bind index,pager \Cn sidebar-next
+bind index,pager \Cp sidebar-prev
+bind index,pager \Co sidebar-open
+
+########################################
+# "Go to" folders -- Bridge v3 top-level names
+########################################
+
+macro index,pager gi "<change-folder>=INBOX<enter>"     "go to inbox"
+macro index,pager gd "<change-folder>=Drafts<enter>"    "go to drafts"
+macro index,pager gs "<change-folder>=Sent<enter>"      "go to sent"
+macro index,pager ga "<change-folder>=All Mail<enter>"  "go to all mail"
+macro index,pager gr "<change-folder>=Archive<enter>"   "go to archive"
+macro index,pager gt "<change-folder>=Trash<enter>"     "go to trash"
+macro index,pager gp "<change-folder>=Spam<enter>"      "go to spam"
+
+# gx = extract/open URLs
+macro index,pager gx "<pipe-message> urlscan<enter>" "open URLs"
+
+# Command-line history in editor like Vim (Ctrl-p / Ctrl-n)
+bind editor \Cp history-up
+bind editor \Cn history-down

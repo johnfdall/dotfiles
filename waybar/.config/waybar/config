@@ -21,6 +21,7 @@
         "network",
         "cpu",
         "memory",
+        "custom/mail",
         "clock",
         "tray",
     ],
@@ -151,6 +152,14 @@
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
+    },
+    "custom/mail": {
+        "format": "{}",
+        "return-type": "json",
+        "interval": 60,
+        "exec": "$HOME/.config/waybar/mail-count.py",
+        "on-click": "hyprctl dispatch exec '[workspace 9] ghostty --class=com.mail.neomutt -e tmux new-session -A -s mail neomutt'",
+        "tooltip": true
     },
     "custom/media": {
         "format": "{icon} {text}",

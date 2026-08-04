@@ -1,3 +1,9 @@
 **/packer_compiled.lua
 nvim/.config/nvim/plugin/packer_compiled.lua
 nvim/.config/nvim/plugin/packer_compiled.lua
+
+# neomutt: caches and TLS trust store are per-machine, never committed.
+# (These live under ~/.cache/neomutt, but guard the package dir too.)
+neomutt/.config/neomutt/cache/
+neomutt/.config/neomutt/certificates
+neomutt/.config/neomutt/alias.local

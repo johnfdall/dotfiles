@@ -1,0 +1,69 @@
+########################################
+# xcodedark palette, via the terminal's ANSI slots
+#
+# These were originally #RRGGBB literals, which neomutt rejected with "Direct
+# colors support disabled". neomutt gates hex colors on the *terminfo* `RGB`
+# boolean; xterm-ghostty only advertises `Tc`/`setrgbf`, and tmux-256color has
+# neither. (nvim works because it trusts $COLORTERM instead.) Making hex work
+# would mean a per-machine `tic` of a patched terminfo -- exactly the kind of
+# per-machine dependency the tmux config already goes out of its way to avoid.
+#
+# Not needed anyway: ghostty's "Xcode Dark hc" theme already *is* this palette,
+# so the ANSI names below resolve to the same colors nvim/waybar/hyprland use.
+# Verified against `ghostty +show-config`:
+#
+#   black   #43454b ~ border      brightblack   #838991 ~ fg_darker
+#   red     #ff8a7a              brightred     #ff8a7a
+#   green   #83c9bc ~ green      brightgreen   #b1faeb
+#   yellow  #d9c668             brightyellow  #ffa14f ~ orange
+#   blue    #4ec4e6 ~ teal      brightblue    #6bdfff = cyan   (exact)
+#   magenta #ff85b8 ~ accent    brightmagenta #ff85b8 ~ accent
+#   cyan    #cda1ff ~ purple    brightcyan    #e5cfff
+#   white   #ffffff             brightwhite   #ffffff
+#
+# Backgrounds stay `default` so ghostty's background-opacity = 0.8 shows
+# through, matching nvim's transparent = true.
+########################################
+
+color normal        default        default
+color indicator     black          brightmagenta  # current line: dark on accent
+color status        black          brightblue     # status bar: dark on cyan
+color error         red            default
+color message       brightblue     default
+color markers       brightblue     default
+color search        black          green          # search hit: dark on green
+color tilde         brightblack    default
+color tree          brightmagenta  default
+color attachment    cyan           default
+color signature     brightblack    default
+color hdrdefault    brightblack    default
+color quoted        green          default
+color quoted1       blue           default
+color quoted2       cyan           default
+color quoted3       brightblack    default
+color prompt        brightmagenta  default
+color progress      black          brightmagenta
+
+# Headers: From/Subject stand out, everything else stays muted
+color header        brightblue     default  "^(From|Subject):"
+color header        brightblack    default  "^(To|Cc|Bcc|Date|Message-ID):"
+
+# Body highlights
+color body          blue           default  "(ftp|http|https)://[^ ]+"    # URLs
+color body          cyan           default  "[-a-z_0-9.]+@[-a-z_0-9.]+"   # emails
+color underline     green          default
+
+# Index: unread/flagged/deleted stand out against read mail
+color index         default        default  "~A"   # all messages
+color index         brightwhite    default  "~N"   # new
+color index         brightmagenta  default  "~F"   # flagged
+color index         brightblack    default  "~D"   # deleted
+color index         yellow         default  "~T"   # tagged
+
+# Sidebar
+color sidebar_divider     brightblack    default
+color sidebar_new         green          default
+color sidebar_indicator   black          brightmagenta
+color sidebar_highlight   brightwhite    black
+
+mono quoted bold

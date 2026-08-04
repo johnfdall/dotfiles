@@ -1,0 +1,112 @@
+########################################
+# Identity
+########################################
+
+set realname = "John Fredrik Dall"
+
+set pgp_default_key = "johnfdall@pm.me"
+set pgp_use_gpg_agent
+set pgp_timeout = 1800
+
+########################################
+# Account
+########################################
+
+# NOTE: paths here are spelled out as ~/.config rather than $XDG_CONFIG_HOME.
+# XDG_CONFIG_HOME/XDG_CACHE_HOME are not exported on this machine, and neomutt
+# expands an unset env var to the empty string -- which would silently turn
+# every path below into a bare relative one.
+
+# Credentials are pulled from `pass` at parse time; see accounts/proton.rc.
+source "~/.config/neomutt/accounts/proton.rc"
+
+set use_envelope_from = yes
+set envelope_from_address = "johnfdall@pm.me"
+
+########################################
+# Mailboxes and behavior
+########################################
+
+# Don't move read mail automatically
+set move = ask-yes
+
+# Confirm deletions
+set delete = ask-yes
+
+# Check mail every 15s, and IMAP keepalive
+set mail_check = 15
+set timeout    = 15
+
+# Read threads newest -> oldest
+set sort = reverse-threads
+
+# Don't wait on "changing folder" etc.
+set sleep_time = 0
+
+########################################
+# UI / formats
+########################################
+
+set status_format = "%f"
+set date_format   = "%m%d"
+set index_format  = "%Z %D %-15.15n %s"
+
+# Aliases file (contacts)
+set alias_file = "~/.config/neomutt/alias"
+source "~/.config/neomutt/alias"
+
+set signature = "~/.config/neomutt/signature"
+
+# Sidebar: same shape as nvim-tree; toggled with `B` (see bindings.rc)
+set sidebar_visible = yes
+set sidebar_width = 24
+set sidebar_short_path = yes
+set sidebar_folder_indent = yes
+set sidebar_indent_string = "  "
+set sidebar_format = "%D%* %?N?%N/?%S"
+set sidebar_divider_char = "│"
+
+# Prefer plain text to HTML; auto-view HTML when needed
+alternative_order text/plain text/html
+auto_view text/html
+set mailcap_path = "~/.config/neomutt/mailcap"
+bind attach <return> view-mailcap
+
+########################################
+# Pager / display
+########################################
+
+ignore *
+unignore From Message-ID Date To Cc Bcc Subject
+
+set pager_stop        # don't show next message automatically
+unset markers         # don't show '+' wrap markers
+
+########################################
+# Editor / compose
+########################################
+
+set editor = "nvim"
+set indent_string = ">"
+set reflow_wrap = 80
+set reflow_text
+unset reflow_space_quotes
+
+########################################
+# IMAP / TLS
+########################################
+
+unset imap_passive
+set imap_check_subscribed
+set imap_keepalive = 900
+
+set ssl_verify_dates
+set ssl_verify_host
+
+# Proton Bridge serves a self-signed cert; trust it explicitly rather than
+# answering the accept-certificate prompt on every cold start.
+set certificate_file = "~/.cache/neomutt/certificates"
+set ssl_ca_certificates_file = "~/.config/protonmail/bridge-v3/cert.pem"
+
+source "~/.config/neomutt/bindings.rc"
+source "~/.config/neomutt/colors.rc"

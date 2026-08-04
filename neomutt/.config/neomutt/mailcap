@@ -1,0 +1,10 @@
+# Auto-render HTML into plain text in the pager (copiousoutput + auto_view)
+text/html; w3m -I %{charset} -T text/html -dump -o display_link_number=1; copiousoutput
+
+# Full w3m "browser" inside the terminal, for explicit viewing from the attach menu
+text/html; w3m -T text/html -o display_link_number=1 %s; needsterminal
+
+# mailcap commands run through /bin/sh, so the opener can be chosen at runtime
+# -- xdg-open on Linux, open on macOS.
+image/*; { command -v xdg-open >/dev/null && xdg-open %s || open %s; }
+application/pdf; { command -v xdg-open >/dev/null && xdg-open %s || open %s; }

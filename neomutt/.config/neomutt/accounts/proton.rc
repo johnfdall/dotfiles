@@ -1,0 +1,38 @@
+########################################
+# ProtonMail Bridge (local IMAP/SMTP)
+#
+# Bridge listens on 127.0.0.1:1143 (IMAP) and 127.0.0.1:1025 (SMTP), both
+# STARTTLS with a self-signed cert. It must be running for any of this to
+# work: `systemctl --user status protonmail-bridge`.
+#
+# The password below is the Bridge-generated one from the Bridge UI, NOT the
+# Proton web password. Store it with:
+#     pass insert proton/bridge
+########################################
+
+set ssl_force_tls = yes
+set send_charset = "us-ascii:utf-8"
+
+set from      = "johnfdall@pm.me"
+set imap_user = "johnfdall@pm.me"
+set imap_pass = "`pass show proton/bridge`"
+
+set folder    = "imap://127.0.0.1:1143"
+set spoolfile = "+INBOX"
+set postponed = "+Drafts"
+set record    = "+Sent"
+set trash     = "+Trash"
+
+# Bridge v3 exposes the system mailboxes at the top level -- verified against a
+# live IMAP LIST. This differs from Bridge v1, which nested them under
+# [Protonmail]/, as the old ~/.mutt/muttrc assumed.
+mailboxes "+INBOX" "+Drafts" "+Sent" "+Archive" "+Starred" "+Spam" "+Trash" "+All Mail"
+
+set smtp_url  = "smtp://johnfdall@pm.me@127.0.0.1:1025"
+set smtp_pass = "`pass show proton/bridge`"
+
+set smtp_authenticators = "login:plain"
+set imap_authenticators = "login"
+
+set header_cache     = "~/.cache/neomutt/headers"
+set message_cachedir = "~/.cache/neomutt/bodies"
