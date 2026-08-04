@@ -4,7 +4,9 @@
 
 set realname = "John Fredrik Dall"
 
-set pgp_default_key = "johnfdall@pm.me"
+# Keyed by long key ID, not by address: the sending address (johnfdall@pm.me)
+# is not a uid on this key, so looking it up by that address finds nothing.
+set pgp_default_key = "7EAB26A06D9DC550"
 set pgp_use_gpg_agent
 set pgp_timeout = 1800
 
