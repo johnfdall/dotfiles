@@ -42,8 +42,10 @@ set use_envelope_from = yes
 # Mailboxes and behavior
 ########################################
 
-# Don't move read mail automatically
-set move = ask-yes
+# Don't move read mail out of the IMAP INBOX. ask-yes still prompts on every
+# exit ("Move N read messages to ~/mbox?") and defaults to yes, which would
+# drain the INBOX into a local mbox file. Archiving is a server-side job.
+set move = no
 
 # Confirm deletions
 set delete = ask-yes
