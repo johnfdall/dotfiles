@@ -26,7 +26,18 @@ separate job. `accounts/` is a directory so a second account can slot in.
 
 ## Steps (same on every machine)
 
-1. **A GPG key must exist**, because `pass` is encrypted to it. Simplest is to
+1. **Link the pinentry wrapper into place.** `gpg-agent.conf` must name an
+   absolute path (it expands neither `~` nor `$HOME`), and usernames and home
+   prefixes differ across these machines, so the config points at a fixed
+   system path:
+
+       sudo ln -sfn ~/.gnupg/pinentry-auto /usr/local/bin/pinentry-auto
+       gpgconf --kill gpg-agent
+
+   This is first because skipping it makes *everything* touching gpg fail with
+   `No pinentry` — including the key generation in the next step.
+
+2. **A GPG key must exist**, because `pass` is encrypted to it. Simplest is to
    generate one locally — the store holds exactly one secret, this machine's
    own Bridge password, so nothing needs sharing between machines:
 
@@ -55,14 +66,6 @@ separate job. `accounts/` is a directory so a second account can slot in.
    `~/.config/neomutt/local.rc` (gitignored, sourced last):
 
        set pgp_default_key = "<this machine's long key id>"
-
-2. **macOS only — fix the pinentry path.** `gpg-agent.conf` needs an absolute
-   path and home directories differ:
-
-       sed -i '' "s|/home/johndall/|$HOME/|" ~/.gnupg/gpg-agent.conf
-
-   (On Linux the committed value is already correct.)
-   Then `gpgconf --kill gpg-agent`.
 
 3. **Log Bridge in.** Use the headless binary on Linux — `protonmail-bridge`
    is a Qt launcher that aborts without a display, which matters over SSH:
