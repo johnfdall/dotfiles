@@ -27,8 +27,24 @@ separate job. `accounts/` is a directory so a second account can slot in.
 ## Steps (same on every machine)
 
 1. **A GPG key must exist**, because `pass` is encrypted to it. Either import
-   your existing key or `gpg --full-generate-key` and `pass init <key-id>`.
-   The *password store contents* do not need syncing — see step 4.
+   your existing secret key or `gpg --full-generate-key`. The *password store
+   contents* do not need syncing — see step 4.
+
+   Then `pass init` it — **by key ID, never by email address**:
+
+       gpg --list-secret-keys --keyid-format=long    # confirm you hold the SECRET key
+       pass init <long-key-id>
+
+   Proton publishes public keys for its own addresses, so initialising against
+   `john.fredrik.dall@protonmail.com` can resolve to Proton's key instead of
+   yours. That silently produces a store you can encrypt to but never decrypt.
+   A key ID is unambiguous.
+
+   An imported key also starts untrusted — ownertrust lives in the trustdb and
+   doesn't travel with the key — so `pass insert` fails with *"no assurance
+   this key belongs to the named user"* until:
+
+       gpg --edit-key <long-key-id>      # trust -> 5 -> y -> save
 
 2. **macOS only — fix the pinentry path.** `gpg-agent.conf` needs an absolute
    path and home directories differ:
