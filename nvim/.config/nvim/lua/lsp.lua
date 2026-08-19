@@ -55,6 +55,34 @@ vim.lsp.config('roslyn', {
   filetypes = { 'cs' },
 })
 
+-- F# via Ionide-vim. Like roslyn.nvim it ships its own `lsp/ionide.lua` and
+-- calls vim.lsp.enable('ionide') itself, so there's nothing to declare here:
+-- its defaults already find `fsautocomplete` on PATH (~/.dotnet/tools), root
+-- the workspace at *.sln/*.slnx/*.fsproj/.git, and pass AutomaticWorkspaceInit
+-- so the project loads without a manual :FSharpLoadProject.
+--
+-- Codelens is the one thing it still does the old way. Ionide drives it with
+-- vim.lsp.codelens.refresh(), deprecated in 0.12 and gone in 0.13, so it prints
+-- a deprecation notice on every attach; and it backs that up with a single
+-- `autocmd CursorHold,InsertLeave <buffer>` registered at LSP init, which binds
+-- to whichever buffer was current at the time. Neither is needed anymore —
+-- codelens.enable() re-requests on its own (debounced, via nvim_buf_attach), per
+-- buffer. Ionide's autocmd is off in plugins.lua; this replaces its on_attach.
+vim.lsp.config('ionide', {
+  on_attach = function(_, bufnr)
+    vim.lsp.codelens.enable(true, { bufnr = bufnr })
+  end,
+  -- FSAC otherwise closes every hover with a raw
+  -- `<a href='command:fsharp.showDocumentation?...'>` line — a VSCode command
+  -- URI, so it's dead text in a float. It isn't one of the options Ionide-vim
+  -- forwards, and going through `settings` would drag in its deprecated
+  -- client.notify() path; FSAC deserializes initializationOptions straight into
+  -- its config DTO, so send it there instead. Deep-merged with ionide's
+  -- AutomaticWorkspaceInit, and its later didChangeConfiguration doesn't carry
+  -- this field, so the value survives.
+  init_options = { TooltipShowDocumentationLink = false },
+})
+
 vim.lsp.config['ts_ls'] = {
   cmd = { 'typescript-language-server', '--stdio' },
   filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
