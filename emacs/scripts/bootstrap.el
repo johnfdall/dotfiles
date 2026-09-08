@@ -1,0 +1,17 @@
+;;; bootstrap.el --- Install packages and grammar -*- lexical-binding: t; -*-
+(setq user-emacs-directory (expand-file-name "~/.emacs.d/"))
+(load (expand-file-name "early-init.el" user-emacs-directory) nil nil t)
+(load (expand-file-name "init.el" minimal-emacs-user-directory) nil nil t)
+(dolist (language '(c-sharp mojo))
+  (unless (treesit-ready-p language t)
+    (treesit-install-language-grammar language)))
+(require 'lsp-mode)
+(require 'dap-netcore)
+(princ (format "\nEmacs %s; native compilation: %s\ntree-sitter C#: %s; Mojo: %s\nRoslyn: %s\n.NET debugger: %s\nMojo: %s\nMojo LSP: %s\nMojo debugger: %s\n"
+               emacs-version (native-comp-available-p)
+               (treesit-ready-p 'c-sharp t) (treesit-ready-p 'mojo t)
+               (executable-find "roslyn-language-server")
+               (dap-netcore--debugger-cmd)
+               (executable-find "mojo")
+               (executable-find "mojo-lsp-server")
+               (executable-find "mojo-lldb-dap")))

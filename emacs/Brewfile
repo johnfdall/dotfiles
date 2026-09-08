@@ -1,0 +1,4 @@
+cask "emacs-app"
+cask "font-jetbrains-mono"
+brew "ripgrep"
+brew "pixi"

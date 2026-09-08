@@ -9,3 +9,9 @@ neomutt/.config/neomutt/certificates
 neomutt/.config/neomutt/alias.local
 # Per-machine overrides (pgp_default_key etc.); sourced last by neomuttrc.
 neomutt/.config/neomutt/local.rc
+
+# Emacs runtime state and generated files.
+emacs/.emacs.d/var/
+emacs/.emacs.d/eln-cache/
+emacs/.emacs.d/custom.el
+emacs/.emacs.d/**/*.elc
