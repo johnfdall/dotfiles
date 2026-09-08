@@ -20,6 +20,16 @@ o.ignorecase     = true
 o.smartcase      = true
 vim.opt.fillchars = { eob = ' ' }
 
+-- Razor views: built-in detection says `razor`, but no razor LSP actually
+-- works here (roslyn's razor filetype is off in lsp.lua too), so treat them
+-- as plain HTML — treesitter's auto_install picks up the html parser.
+vim.filetype.add({
+  extension = {
+    cshtml = 'html',
+    razor  = 'html',
+  },
+})
+
 -- 0.12 native completion
 o.autocomplete   = true
 o.completeopt    = 'menu,menuone,noselect'

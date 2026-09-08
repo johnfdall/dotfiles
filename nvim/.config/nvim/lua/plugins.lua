@@ -130,6 +130,87 @@ require('nvim-treesitter.configs').setup({
   indent = { enable = true, disable = { 'c', 'cpp' } },
 })
 
+-- Classic nvim-treesitter registers its custom query predicates/directives in
+-- the old single-node style (`match[id]` = one TSNode), but 0.12 dropped that
+-- compat path: handlers now always get `match[id]` = list of TSNodes, and its
+-- `all = false` opt-out is ignored. Every one of its six handlers therefore
+-- calls `:range()`/`:type()` on a Lua table and blows up the highlighter the
+-- moment a query hits one — `set-lang-from-mimetype!` on any
+-- `<script type=...>` in HTML, `set-lang-from-info-string!` on any fenced
+-- code block in markdown. (The C/C++ indent disable above is the same bug via
+-- `kind-eq?`.) Its registrations live in its `plugin/` file, which vim.pack
+-- sources AFTER init.lua — so requiring the module here first makes that later
+-- require a cached no-op, and the re-registrations below (unwrapping each
+-- capture to its last node, as core's old compat shim did) stay in charge.
+do
+  require('nvim-treesitter.query_predicates')
+  local q = vim.treesitter.query
+  local opts = { force = true, all = true }
+
+  local function one(match, id)
+    local nodes = match[tonumber(id)]
+    if type(nodes) == 'table' then return nodes[#nodes] end
+    return nodes
+  end
+
+  local mimetype_langs = {
+    ['importmap'] = 'json',
+    ['module'] = 'javascript',
+    ['application/ecmascript'] = 'javascript',
+    ['text/ecmascript'] = 'javascript',
+  }
+  local info_string_aliases = {
+    ex = 'elixir', pl = 'perl', sh = 'bash', uxn = 'uxntal', ts = 'typescript',
+  }
+
+  q.add_directive('set-lang-from-mimetype!', function(match, _, bufnr, pred, metadata)
+    local node = one(match, pred[2])
+    if not node then return end
+    local mimetype = vim.treesitter.get_node_text(node, bufnr)
+    metadata['injection.language'] = mimetype_langs[mimetype]
+      or vim.split(mimetype, '/', {})[#vim.split(mimetype, '/', {})]
+  end, opts)
+
+  q.add_directive('set-lang-from-info-string!', function(match, _, bufnr, pred, metadata)
+    local node = one(match, pred[2])
+    if not node then return end
+    local alias = vim.treesitter.get_node_text(node, bufnr):lower()
+    metadata['injection.language'] = vim.filetype.match({ filename = 'a.' .. alias })
+      or info_string_aliases[alias] or alias
+  end, opts)
+
+  q.add_directive('downcase!', function(match, _, bufnr, pred, metadata)
+    local id = tonumber(pred[2])
+    local node = one(match, pred[2])
+    if not node then return end
+    local text = vim.treesitter.get_node_text(node, bufnr, { metadata = metadata[id] }) or ''
+    metadata[id] = metadata[id] or {}
+    metadata[id].text = text:lower()
+  end, opts)
+
+  q.add_predicate('nth?', function(match, _, _, pred)
+    local node = one(match, pred[2])
+    local n = tonumber(pred[3])
+    if node and node:parent() and node:parent():named_child_count() > n then
+      return node:parent():named_child(n) == node
+    end
+    return false
+  end, opts)
+
+  q.add_predicate('is?', function(match, _, bufnr, pred)
+    local node = one(match, pred[2])
+    if not node then return true end
+    local _, _, kind = require('nvim-treesitter.locals').find_definition(node, bufnr)
+    return vim.tbl_contains({ unpack(pred, 3) }, kind)
+  end, opts)
+
+  q.add_predicate('kind-eq?', function(match, _, _, pred)
+    local node = one(match, pred[2])
+    if not node then return true end
+    return vim.tbl_contains({ unpack(pred, 3) }, node:type())
+  end, opts)
+end
+
 -- Ionide's ftdetect takes `*.fsproj` off the `xml` filetype and onto
 -- `fsharp_project` (it hangs a BufWritePost hook there that tells FSAC to
 -- reload the workspace when you add a package or a file), which would
