@@ -132,7 +132,7 @@
       '((c-sharp "https://github.com/tree-sitter/tree-sitter-c-sharp" "v0.23.1")
         (mojo "https://github.com/dmitry-salin/tree-sitter-mojo" "v1.0.5")))
 
-;; Mojo: the mode, its LSP client and build/debug commands load on first use.
+;; Mojo: tree-sitter highlighting and build/debug commands load on first use.
 (autoload 'mojo-ts-mode "mojo-ts-mode" "Major mode for Mojo." t)
 (add-to-list 'auto-mode-alist '("\\.\\(?:mojo\\|🔥\\)\\'" . mojo-ts-mode))
 (add-to-list 'interpreter-mode-alist '("mojo" . mojo-ts-mode))

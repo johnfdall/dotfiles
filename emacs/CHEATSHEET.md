@@ -123,7 +123,7 @@ Type a name or `Console.` and pause for completion suggestions.
 | `M-x yas-insert-snippet` | Choose a snippet |
 | `TAB` / `S-TAB` | In an active snippet: next / previous field |
 
-## Code navigation, refactoring, and diagnostics (C# and Mojo)
+## LSP navigation, refactoring, and live diagnostics (C# only)
 
 Place the cursor on the symbol you want to act on. For some refactorings,
 select the expression or statements first.
@@ -152,8 +152,9 @@ select the expression or statements first.
 Pause after `C-c l` to see the which-key command menu.
 Errors have red wavy underlines; warnings yellow waves; Roslyn information and
 suggestions subtle gray underlines. Pause on an underline for its message at
-the bottom. Optional refactorings do not create markers. The Mojo server has
-no formatter, so `C-c l = =` does nothing there; use `SPC m f` (`mojo format`).
+the bottom. Optional refactorings do not create markers. Mojo uses tree-sitter
+highlighting without LSP or live diagnostics: build with `SPC m m`, navigate
+compiler errors with `]q` / `[q`, and format with `SPC m f` (`mojo format`).
 
 ## Build, test, and run
 

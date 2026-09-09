@@ -38,10 +38,9 @@ open in `mojo-ts-mode` (`lisp/mojo-ts-mode.el`), a tree-sitter mode built on
 the community [tree-sitter-mojo](https://github.com/dmitry-salin/tree-sitter-mojo)
 grammar pinned to v1.0.5. It borrows Python's indentation engine, taught about
 `struct`, `trait`, and `comptime if` blocks, because the grammar is Python's
-with Mojo additions. lsp-mode's bundled Mojo client starts `mojo-lsp-server`
-for completion, diagnostics, hover, navigation, rename, code actions, and
-semantic highlighting. The server does not offer formatting, so `SPC m f` in a
-Mojo buffer runs `mojo format` on the file instead of the LSP formatter.
+with Mojo additions. Mojo uses tree-sitter highlighting without LSP or live
+diagnostics. Build with `SPC m m` and navigate compiler errors with `]q` / `[q`.
+`SPC m f` runs `mojo format` on the file.
 Language wiring lives in `lisp/dotfiles-mojo.el`.
 
 Diagnostics use red wavy underlines for errors, yellow wavy underlines for

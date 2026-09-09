@@ -11,13 +11,17 @@
   "Keep the cursor centered after a jump or half-page scroll."
   (recenter))
 
-(defun dotfiles-evil-scroll-down-centered (count)
-  (interactive "p")
+(evil-define-command dotfiles-evil-scroll-down-centered (count)
+  "Scroll down half a window (or COUNT lines), then center the cursor."
+  :repeat nil
+  (interactive "<c>")
   (evil-scroll-down count)
   (dotfiles-evil-recenter))
 
-(defun dotfiles-evil-scroll-up-centered (count)
-  (interactive "p")
+(evil-define-command dotfiles-evil-scroll-up-centered (count)
+  "Scroll up half a window (or COUNT lines), then center the cursor."
+  :repeat nil
+  (interactive "<c>")
   (evil-scroll-up count)
   (dotfiles-evil-recenter))
 

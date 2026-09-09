@@ -1,4 +1,4 @@
-;;; dotfiles-mojo.el --- Mojo: LSP, build, run, format and debug -*- lexical-binding: t; -*-
+;;; dotfiles-mojo.el --- Mojo: build, run, format and debug -*- lexical-binding: t; -*-
 (require 'project)
 (require 'compile)
 (require 'json)
@@ -146,14 +146,15 @@ calls TestSuite.run."
     :format dotfiles-mojo-format))
 
 (defun dotfiles-mojo-setup ()
-  "Select the Mojo toolchain for the build keys."
-  (setq dotfiles-build-commands dotfiles-mojo-commands))
+  "Select the Mojo toolchain and use compiler output for diagnostics."
+  (setq dotfiles-build-commands dotfiles-mojo-commands)
+  (when (bound-and-true-p lsp-mode) (lsp-disconnect))
+  (when (bound-and-true-p flycheck-mode) (flycheck-mode -1))
+  (when (bound-and-true-p flymake-mode) (flymake-mode -1)))
 
 (add-hook 'mojo-ts-mode-hook #'dotfiles-mojo-setup)
-(add-hook 'mojo-ts-mode-hook #'lsp-deferred)
-(with-eval-after-load 'lsp-mode
-  ;; lsp-mode's bundled lsp-mojo client starts mojo-lsp-server for "mojo".
-  (add-to-list 'lsp-language-id-configuration '(mojo-ts-mode . "mojo")))
+;; Also remove the previous auto-start hook when reloading this file live.
+(remove-hook 'mojo-ts-mode-hook #'lsp-deferred)
 
 (provide 'dotfiles-mojo)
 ;;; dotfiles-mojo.el ends here
