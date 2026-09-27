@@ -114,6 +114,7 @@ require('nvim-treesitter.configs').setup({
   ensure_installed = {
     'c', 'cpp', 'rust', 'lua', 'vim', 'vimdoc', 'query',
     'typescript', 'tsx', 'javascript', 'jsdoc', 'markdown', 'markdown_inline',
+    'ocaml', 'ocaml_interface',
   },
   auto_install = true,
   -- F# highlighting stays with Ionide-vim's own `syntax/fsharp.vim` (its

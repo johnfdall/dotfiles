@@ -90,3 +90,11 @@ vim.lsp.config['ts_ls'] = {
 }
 
 vim.lsp.enable('ts_ls')
+
+vim.lsp.config['ocamllsp'] = {
+  cmd = { 'ocamllsp' },
+  filetypes = { 'ocaml', 'ocaml.menhir', 'ocaml.interface', 'ocaml.ocamllex', 'reason', 'dune' },
+  root_markers = { 'dune-project', 'dune-workspace', '.git' },
+}
+
+vim.lsp.enable('ocamllsp')
